@@ -4,6 +4,8 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
+import bpogoda.spaceteam.bean.ControlPanel;
+
 // WindowBuilder seems to ignore BeanInfo descriptors.
 public class ControlPanelBeanInfo extends SimpleBeanInfo {
 
