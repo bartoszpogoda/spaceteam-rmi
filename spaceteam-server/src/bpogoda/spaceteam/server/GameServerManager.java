@@ -14,11 +14,13 @@ public class GameServerManager {
 	
 	public static final String REGISTRY_STUB_NAME = "GameServer";
 	
+	public static final int REGISTRY_PORT = 1099;
+	
 	Registry registry;
 	
 	public GameServerManager() {
 		try {
-			registry = LocateRegistry.getRegistry();
+			registry = LocateRegistry.createRegistry(REGISTRY_PORT);
 		} catch (RemoteException e) {
 			System.err.println("Couldn't get registry.");
 		}

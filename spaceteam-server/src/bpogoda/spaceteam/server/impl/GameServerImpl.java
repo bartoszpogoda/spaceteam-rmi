@@ -33,7 +33,7 @@ public class GameServerImpl implements GameServer {
 		System.out.println("DBG: Crew connected: " + crewType);
 		
 		System.out.println("DBG: Generating random commands.");
-		List<Command> randomCommands = commandFactory.generate(5, controlPanel);
+		List<Command> randomCommands = commandFactory.generate(5, controlPanel, crewType);
 		
 		System.out.println("DBG: Adding commands to the pool");
 		randomCommandPool.addAll(randomCommands);

@@ -5,6 +5,7 @@ import java.rmi.registry.Registry;
 
 import bpogoda.spaceteam.server.CrewType;
 import bpogoda.spaceteam.server.GameServer;
+import bpogoda.spaceteam.server.GameServerManager;
 import team.engine.MainWindow;
 
 public class App {
@@ -15,8 +16,8 @@ public class App {
 
 		try {
 			// Connect to GameServer
-			Registry registry = LocateRegistry.getRegistry("localhost");
-			GameServer stub = (GameServer) registry.lookup("GameServer");
+			Registry registry = LocateRegistry.getRegistry(GameServerManager.REGISTRY_PORT);
+			GameServer stub = (GameServer) registry.lookup(GameServerManager.REGISTRY_STUB_NAME);
 			boolean response = stub.connectCrew(CREW_TYPE, null);
 			System.out.println("response: " + response);
 		} catch (Exception e) {
