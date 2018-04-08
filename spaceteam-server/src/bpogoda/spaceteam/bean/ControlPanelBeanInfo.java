@@ -14,7 +14,7 @@ public class ControlPanelBeanInfo extends SimpleBeanInfo {
 	@Override
 	public PropertyDescriptor[] getPropertyDescriptors() {
 		try {
-			PropertyDescriptor panelTitle = new PropertyDescriptor("sliderPanelTitle", beanClass);
+			PropertyDescriptor panelTitle = new PropertyDescriptor("sliderDeviceName", beanClass);
 			panelTitle.setDisplayName("Test");
 			PropertyDescriptor rv[] = { panelTitle };
 			

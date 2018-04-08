@@ -18,12 +18,12 @@ public class RandomCommandFactory {
 		// TODO: Generate commands based on panel set up
 		
 		// Generate toggle commands
-		String togglePanelTitle = controlPanel.getTogglePanelTitle();		
+//		String togglePanelTitle = controlPanel.getTogglePanelTitle();		
 		
 		
 		// temp mock
-		randomCommands.add(new SliderCommand(crewType));
-		randomCommands.add(new ToggleCommand(crewType));
+//		randomCommands.add(new SliderCommand(crewType, 5));
+//		randomCommands.add(new ToggleCommand(crewType, true));
 
 		return randomCommands;
 	}

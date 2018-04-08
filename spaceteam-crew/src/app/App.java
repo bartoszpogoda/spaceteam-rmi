@@ -6,7 +6,7 @@ import java.rmi.registry.Registry;
 import bpogoda.spaceteam.server.CrewType;
 import bpogoda.spaceteam.server.GameServer;
 import bpogoda.spaceteam.server.GameServerManager;
-import team.engine.MainWindow;
+import team.engine.EngineCrewWindow;
 
 public class App {
 
@@ -25,7 +25,7 @@ public class App {
 			e.printStackTrace();
 		}
 
-		MainWindow mw = new MainWindow();
+		EngineCrewWindow mw = new EngineCrewWindow();
 		mw.setVisible(true);
 	}
 

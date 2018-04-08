@@ -13,12 +13,21 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
-import bpogoda.spaceteam.bean.event.ButtonPressed;
-import bpogoda.spaceteam.bean.event.ButtonPressedListener;
+import bpogoda.spaceteam.bean.event.TextChanged;
+import bpogoda.spaceteam.bean.event.TextChangedListener;
+import bpogoda.spaceteam.server.CrewType;
 import bpogoda.spaceteam.bean.event.ButtonToggled;
 import bpogoda.spaceteam.bean.event.ButtonToggledListener;
+import bpogoda.spaceteam.bean.event.CommandExecutedButtonPressed;
+import bpogoda.spaceteam.bean.event.CommandExecutedButtonPressedListener;
 import bpogoda.spaceteam.bean.event.SliderChanged;
 import bpogoda.spaceteam.bean.event.SliderChangedListener;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import java.awt.Color;
+import javax.swing.JTextField;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class ControlPanel extends JPanel {
 
@@ -29,174 +38,206 @@ public class ControlPanel extends JPanel {
 
 	// Bean properties
 
-	private String sliderPanelTitle;
+	private String sliderDeviceName;
 
-	private Integer sliderMin;
+	private Integer sliderDeviceMin;
 
-	private Integer sliderMax;
+	private Integer sliderDeviceMax;
 
-	private String togglePanelTitle;
+	private String toggleDeviceName;
 
-	private String toggleButtonLabel;
+	private String toggleDeviceBtnLabel;
 
-	private String buttonPanelTite;
-
-	private String[] buttonLabels;
+	private String textDeviceName;
+	
+	private String currentCommand;
+	
+	private CrewType crewType;
 
 	// Event listeners
 
-	private List<ButtonPressedListener> buttonPressedListeners = new ArrayList<>();
+	private List<TextChangedListener> textChangedListeners = new ArrayList<>();
 
 	private List<ButtonToggledListener> buttonToggledListeners = new ArrayList<>();
 
 	private List<SliderChangedListener> sliderChangedListeners = new ArrayList<>();
 
-	// Swing controls
-
-	private JToggleButton tglbtn;
-
-	private JPanel panelSlider;
-
-	private JSlider slider;
-
-	private JLabel lblSliderValueLabel, lblSliderValue, lblButtons, lblSlider, lblToggle;
-
-	private JButton btn1, btn2, btn3, btn4;
+	private List<CommandExecutedButtonPressedListener> commandExecutedButtonPressedListeners = new ArrayList<>();
 
 	private JButton buttons[];
+	private JTextField tfTextDevice;
 
-	private JPanel panelButtons;
+	private JPanel panelSliderDevice;
+
+	private JSlider sliderSliderDevice;
+
+	private JLabel lblSliderDeviceValue;
+
+	private JLabel lblTitle;
+
+	private JPanel panelToggleDevice;
+
+	private JToggleButton tglbtnToggleDevice;
+
+	private JPanel panelTextDevice;
+
+	private JButton btnActionDone;
+	private JPanel panel_1;
+	private JLabel lblNewLabel;
+	private JLabel lblTeamScore;
+	private JLabel lblCommanderSays;
+	private JPanel panel_2;
+	private JLabel lblCurrentCommand;
+	private JLabel label;
+	private JPanel panel_3;
+	private JLabel lblYoureInThe;
 
 	public ControlPanel() {
-		setLayout(new GridLayout(0, 2, 0, 0));
+		setLayout(null);
 
-		lblToggle = new JLabel("New label");
-		add(lblToggle);
+		panelSliderDevice = new JPanel();
+		panelSliderDevice.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Slider Device",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSliderDevice.setBounds(12, 125, 426, 66);
+		add(panelSliderDevice);
 
-		tglbtn = new JToggleButton("New toggle button");
-		add(tglbtn);
+		sliderSliderDevice = new JSlider();
+		panelSliderDevice.add(sliderSliderDevice);
 
-		lblSlider = new JLabel("New label");
-		add(lblSlider);
+		lblSliderDeviceValue = new JLabel("New label");
+		panelSliderDevice.add(lblSliderDeviceValue);
 
-		panelSlider = new JPanel();
-		add(panelSlider);
-		panelSlider.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelToggleDevice = new JPanel();
+		panelToggleDevice
+				.setBorder(new TitledBorder(null, "Toggle Device", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelToggleDevice.setBounds(12, 204, 426, 58);
+		add(panelToggleDevice);
 
-		slider = new JSlider();
-		panelSlider.add(slider);
-		slider.setSnapToTicks(true);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
+		tglbtnToggleDevice = new JToggleButton("New toggle button");
+		panelToggleDevice.add(tglbtnToggleDevice);
 
-		slider.addChangeListener(change -> {
-			lblSliderValue.setText(Integer.toString(slider.getValue()));
-		});
+		panelTextDevice = new JPanel();
+		panelTextDevice
+				.setBorder(new TitledBorder(null, "Text Device", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelTextDevice.setBounds(12, 275, 426, 74);
+		add(panelTextDevice);
 
-		lblSliderValueLabel = new JLabel("Value: ");
-		panelSlider.add(lblSliderValueLabel);
+		tfTextDevice = new JTextField();
+		panelTextDevice.add(tfTextDevice);
+		tfTextDevice.setColumns(10);
 
-		lblSliderValue = new JLabel(Integer.toString(slider.getValue()));
-		panelSlider.add(lblSliderValue);
+		btnActionDone = new JButton("Commander, the command has been executed!");
+		btnActionDone.setBounds(12, 362, 426, 25);
+		add(btnActionDone);
 
-		lblButtons = new JLabel("New label");
-		add(lblButtons);
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setBounds(449, 13, 139, 374);
+		add(panel_1);
+		panel_1.setLayout(new GridLayout(4, 2, 0, 0));
 
-		panelButtons = new JPanel();
-		add(panelButtons);
-		panelButtons.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		lblNewLabel = new JLabel("Team score:");
+		panel_1.add(lblNewLabel);
 
-		btn1 = new JButton("New button");
-		panelButtons.add(btn1);
+		lblTeamScore = new JLabel("50");
+		lblNewLabel.setLabelFor(lblTeamScore);
+		panel_1.add(lblTeamScore);
 
-		btn2 = new JButton("New button");
-		panelButtons.add(btn2);
+		panel_2 = new JPanel();
+		panel_2.setBackground(Color.ORANGE);
+		panel_2.setBounds(12, 13, 438, 39);
+		add(panel_2);
 
-		btn3 = new JButton("New button");
-		panelButtons.add(btn3);
+		lblCommanderSays = new JLabel("Commander says: \"");
+		panel_2.add(lblCommanderSays);
 
-		btn4 = new JButton("New button");
-		panelButtons.add(btn4);
+		lblCurrentCommand = new JLabel("Welcome, my team!");
+		panel_2.add(lblCurrentCommand);
 
-		buttons = new JButton[] { btn1, btn2, btn3, btn4 };
+		label = new JLabel("\"");
+		panel_2.add(label);
+
+		panel_3 = new JPanel();
+		panel_3.setBounds(12, 60, 426, 39);
+		add(panel_3);
+
+		lblYoureInThe = new JLabel("You're in the:  ");
+		panel_3.add(lblYoureInThe);
+
+		lblTitle = new JLabel("Engine steering room");
+		panel_3.add(lblTitle);
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		registerUIListeners();
 	}
 
 	private void registerUIListeners() {
-		Arrays.stream(buttons).forEach(btn -> btn.addActionListener((ev) -> {
-			buttonPressedListeners
-					.forEach(l -> l.buttonPressed(new ButtonPressed(this, ((JButton) ev.getSource()).getText())));
-		}));
-
-		tglbtn.addActionListener(ev -> {
-			buttonToggledListeners.forEach(l -> l.buttonToggled(new ButtonToggled(this, ((JToggleButton) ev.getSource()).isSelected())));
+		sliderSliderDevice.addChangeListener(ev -> {
+			sliderChangedListeners
+					.forEach(l -> l.sliderChanged(new SliderChanged(this, ((JSlider) ev.getSource()).getValue())));
 		});
-		
-		slider.addChangeListener(ev -> {
-			sliderChangedListeners.forEach(l -> l.sliderChanged(new SliderChanged(this, ((JSlider) ev.getSource()).getValue())));
+
+		btnActionDone.addActionListener(ev -> {
+			commandExecutedButtonPressedListeners
+					.forEach(l -> l.commandExecutedButtonPressed(new CommandExecutedButtonPressed(this)));
 		});
 	}
 
 	@Override
 	public void paint(Graphics g) {
 
-		// Slider panel
-		if (sliderPanelTitle == null || sliderPanelTitle.isEmpty()) {
-			lblSlider.setEnabled(false);
-			panelSlider.setEnabled(false);
-		} else {
-			lblSlider.setText(sliderPanelTitle);
+		// Slider device
+		if (sliderDeviceName == null || sliderDeviceName.isEmpty()) {
+			panelSliderDevice.setEnabled(false);
+			sliderSliderDevice.setEnabled(false);
+			lblSliderDeviceValue.setEnabled(false);
+			setTitledBorder(panelSliderDevice, "Disabled");
 
-			if (sliderMin != null && sliderMax != null) {
-				slider.setMinimum(sliderMin);
-				slider.setMaximum(sliderMax);
+		} else {
+			setTitledBorder(panelSliderDevice, sliderDeviceName);
+
+			if (sliderDeviceMin != null && sliderDeviceMax != null) {
+				sliderSliderDevice.setMinimum(sliderDeviceMin);
+				sliderSliderDevice.setMaximum(sliderDeviceMax);
 			}
 		}
 
-		// Toggle panel
-		if (togglePanelTitle == null || togglePanelTitle.isEmpty() || toggleButtonLabel == null
-				|| toggleButtonLabel.isEmpty()) {
-			lblToggle.setVisible(false);
-			tglbtn.setVisible(false);
-		} else {
-			lblToggle.setText(togglePanelTitle);
-			tglbtn.setText(toggleButtonLabel);
+		// Toggle device
+		if (toggleDeviceName == null || toggleDeviceName.isEmpty() || toggleDeviceBtnLabel == null
+				|| toggleDeviceBtnLabel.isEmpty()) {
+			panelToggleDevice.setEnabled(false);
+			setTitledBorder(panelToggleDevice, "Disabled");
+			tglbtnToggleDevice.setEnabled(false);
 
-			lblToggle.setVisible(true);
-			tglbtn.setVisible(true);
+		} else {
+			setTitledBorder(panelToggleDevice, toggleDeviceName);
+			tglbtnToggleDevice.setText(toggleDeviceBtnLabel);
 		}
 
-		// Buttons panel
-		if (buttonLabels != null && buttonPanelTite != null && !buttonPanelTite.isEmpty() && buttonLabels.length > 0) {
+		// Text device
+		if (textDeviceName == null || textDeviceName.isEmpty()) {
+			panelTextDevice.setEnabled(false);
+			setTitledBorder(panelTextDevice, "Disabled");
+			tfTextDevice.setEnabled(false);
 
-			int i = 0;
-			for (; i < buttonLabels.length; i++) {
-				buttons[i].setText(buttonLabels[i]);
-				buttons[i].setVisible(true);
-			}
-
-			for (; i < buttons.length; i++) {
-				buttons[i].setVisible(false);
-			}
-
-			lblButtons.setText(buttonPanelTite);
-			lblButtons.setVisible(true);
-			panelButtons.setVisible(true);
 		} else {
-			lblButtons.setVisible(false);
-			panelButtons.setVisible(false);
+			setTitledBorder(panelTextDevice, textDeviceName);
 		}
 
 		super.paint(g);
 	}
 
-	public synchronized void addButtonPressedListener(ButtonPressedListener l) {
-		buttonPressedListeners.add(l);
+	private void setTitledBorder(JPanel panel, String title) {
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), title, TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(0, 0, 0)));
 	}
 
-	public synchronized void removeButtonPressedListener(ButtonPressedListener l) {
-		buttonPressedListeners.remove(l);
+	public synchronized void addButtonPressedListener(TextChangedListener l) {
+		textChangedListeners.add(l);
+	}
+
+	public synchronized void removeButtonPressedListener(TextChangedListener l) {
+		textChangedListeners.remove(l);
 	}
 
 	public synchronized void addButtonToggledListener(ButtonToggledListener l) {
@@ -215,60 +256,74 @@ public class ControlPanel extends JPanel {
 		sliderChangedListeners.remove(l);
 	}
 
-	public String getSliderPanelTitle() {
-		return sliderPanelTitle;
+	public synchronized void addCommandExecutedButtonPressedListener(CommandExecutedButtonPressedListener l) {
+		commandExecutedButtonPressedListeners.add(l);
 	}
 
-	public void setSliderPanelTitle(String sliderPanelTitle) {
-		this.sliderPanelTitle = sliderPanelTitle;
+	public synchronized void removeCommandExecutedButtonPressedListener(CommandExecutedButtonPressedListener l) {
+		commandExecutedButtonPressedListeners.remove(l);
 	}
 
-	public String getTogglePanelTitle() {
-		return togglePanelTitle;
+	public String getToggleDeviceName() {
+		return toggleDeviceName;
 	}
 
-	public void setTogglePanelTitle(String togglePanelTitle) {
-		this.togglePanelTitle = togglePanelTitle;
+	public void setToggleDeviceName(String toggleDeviceName) {
+		this.toggleDeviceName = toggleDeviceName;
 	}
 
-	public String[] getButtonLabels() {
-		return buttonLabels;
+	public String getToggleDeviceBtnLabel() {
+		return toggleDeviceBtnLabel;
 	}
 
-	public void setButtonLabels(String[] buttonLabels) {
-		this.buttonLabels = buttonLabels;
+	public void setToggleDeviceBtnLabel(String toggleDeviceBtnLabel) {
+		this.toggleDeviceBtnLabel = toggleDeviceBtnLabel;
 	}
 
-	public String getButtonPanelTite() {
-		return buttonPanelTite;
+	public String getSliderDeviceName() {
+		return sliderDeviceName;
 	}
 
-	public void setButtonPanelTite(String buttonPanelTite) {
-		this.buttonPanelTite = buttonPanelTite;
+	public void setSliderDeviceName(String sliderDeviceName) {
+		this.sliderDeviceName = sliderDeviceName;
 	}
 
-	public String getToggleButtonLabel() {
-		return toggleButtonLabel;
+	public Integer getSliderDeviceMin() {
+		return sliderDeviceMin;
 	}
 
-	public void setToggleButtonLabel(String toggleButtonLabel) {
-		this.toggleButtonLabel = toggleButtonLabel;
+	public void setSliderDeviceMin(Integer sliderDeviceMin) {
+		this.sliderDeviceMin = sliderDeviceMin;
 	}
 
-	public Integer getSliderMin() {
-		return sliderMin;
+	public Integer getSliderDeviceMax() {
+		return sliderDeviceMax;
 	}
 
-	public void setSliderMin(Integer sliderMin) {
-		this.sliderMin = sliderMin;
+	public void setSliderDeviceMax(Integer sliderDeviceMax) {
+		this.sliderDeviceMax = sliderDeviceMax;
 	}
 
-	public Integer getSliderMax() {
-		return sliderMax;
+	public String getTextDeviceName() {
+		return textDeviceName;
 	}
 
-	public void setSliderMax(Integer sliderMax) {
-		this.sliderMax = sliderMax;
+	public void setTextDeviceName(String textDeviceName) {
+		this.textDeviceName = textDeviceName;
 	}
 
+	public void setCurrentCommand(String currentCommand) {
+		this.currentCommand = currentCommand;
+		lblCurrentCommand.setText(currentCommand);
+	}
+
+	public CrewType getCrewType() {
+		return crewType;
+	}
+
+	public void setCrewType(CrewType crewType) {
+		this.crewType = crewType;
+	}
+
+	
 }
