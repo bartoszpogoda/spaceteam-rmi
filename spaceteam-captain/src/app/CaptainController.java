@@ -8,12 +8,15 @@ import java.util.List;
 import bpogoda.spaceteam.server.CaptainGameServer;
 import bpogoda.spaceteam.server.GameServerManager;
 import bpogoda.spaceteam.server.command.Command;
+import bpogoda.spaceteam.server.impl.GameState;
 
 public class CaptainController {
 
 	private CaptainWindow captainWindow;
 	
 	private CaptainGameServer gameServerStub;
+	
+	private GameState lastGameState;
 
 	public void setCaptainWindow(CaptainWindow captainWindow) {
 		this.captainWindow = captainWindow;
@@ -36,28 +39,74 @@ public class CaptainController {
 				e.printStackTrace();
 			}
 			
-			try {
-				start();
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			IntervalPooling intervalPooling = new IntervalPooling(this);
+			intervalPooling.execute();
+			
+			captainWindow.setVisible(true);
 			
 		} else {
 			System.out.println("First satisfy dependencies on: captainWindow");
 		}
 	}
 	
-	private void start() throws RemoteException {
-		captainWindow.setVisible(true);
-		
-//		List<Command> commands = gameServerStub.getCommands(5);
-		captainWindow.updateCommands(gameServerStub.getAllCommands());
+	public void sendCommand(Command command) {
+		if(lastGameState == GameState.COMMAND_PHASE) {
+			try {
+				lastGameState = gameServerStub.sendCommand(command);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
+			if(lastGameState == GameState.EXECUTION_PHASE) {
+				System.out.println("Command sent");
+				
+				captainWindow.setSendCommandBtnEnabled(false);
+			} else {
+				System.out.println("Command not sent");
+			}
+		}
 	}
 
 
-	public void sendCommand(Command command) {
-		System.out.println("To send: " + command.getCommandMessage());
+	public void startGame() {
+		try {
+			
+			lastGameState = gameServerStub.startGame();
+			
+			if(lastGameState == GameState.INITIALIZING) {
+				System.out.println("couldnt start the game");
+			} else if(lastGameState == GameState.COMMAND_PHASE) {
+				System.out.println("Game started");
+				captainWindow.updateCommands(gameServerStub.getAllCommands());
+				
+			}
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	public void poolFromServer() {
+		
+		try {
+			GameState state = gameServerStub.getState();
+			
+			System.out.println("Game state is now: " + state);
+			
+			if(state != lastGameState) {
+				// game state changed
+				
+				System.out.println("Game state changed!");
+				
+				this.lastGameState = state;
+			}
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

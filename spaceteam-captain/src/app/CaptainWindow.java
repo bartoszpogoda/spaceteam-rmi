@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
 
 public class CaptainWindow extends JFrame {
 
@@ -29,6 +31,8 @@ public class CaptainWindow extends JFrame {
 	private DefaultListModel<Command> listModel;
 
 	private JList<Command> listCommands;
+
+	private JButton btnSendCommand;
 
 	public CaptainWindow() {
 
@@ -59,15 +63,32 @@ public class CaptainWindow extends JFrame {
 		JLabel lblNewLabel = new JLabel("New label");
 		panel.add(lblNewLabel);
 
-		JButton btnSendCommand = new JButton("Crew members, execute this command!");
+		JPanel panel_1 = new JPanel();
+		getContentPane().add(panel_1, BorderLayout.SOUTH);
+
+		btnSendCommand = new JButton("Crew members, execute this command!");
+		panel_1.add(btnSendCommand);
+
+		JPanel panel_2 = new JPanel();
+		getContentPane().add(panel_2, BorderLayout.EAST);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
+
+		JButton btnStartGame = new JButton("Start game");
+		btnStartGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				captainController.startGame();
+			}
+		});
+		panel_2.add(btnStartGame);
+
+		JButton btnNewButton = new JButton("New button");
+		panel_2.add(btnNewButton);
 
 		btnSendCommand.addActionListener(ev -> {
 			if (listCommands.getSelectedValue() != null) {
 				captainController.sendCommand(listCommands.getSelectedValue());
 			}
 		});
-
-		getContentPane().add(btnSendCommand, BorderLayout.SOUTH);
 	}
 
 	public void updateCommands(List<Command> commands) {
@@ -80,6 +101,10 @@ public class CaptainWindow extends JFrame {
 
 	public void setCaptainController(CaptainController captainController) {
 		this.captainController = captainController;
+	}
+
+	public void setSendCommandBtnEnabled(boolean b) {
+		this.btnSendCommand.setEnabled(b);
 	}
 
 }

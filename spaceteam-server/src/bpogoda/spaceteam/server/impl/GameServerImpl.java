@@ -18,6 +18,8 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 
 	private List<Command> randomCommandPool = new ArrayList<>();
 	
+	private Command currentCommand;
+	
 	int connectedCrewPlayers = 0;
 	int connectedCaptainPlayers = 0;
 
@@ -75,4 +77,32 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 		
 		return commands;
 	}
+
+	@Override
+	public GameState getState() throws RemoteException {
+		return currentGameState;
+	}
+
+	@Override
+	public GameState startGame() throws RemoteException {
+		
+		if(connectedCrewPlayers >= 1) {
+			this.currentGameState = GameState.COMMAND_PHASE;
+		}
+		
+		return this.currentGameState;
+	}
+
+	@Override
+	public GameState sendCommand(Command command) {
+		
+		if(currentGameState == GameState.COMMAND_PHASE) {
+			this.currentCommand = command;
+			
+			currentGameState = GameState.EXECUTION_PHASE;
+		}
+		
+		return currentGameState;
+	}
+	
 }
