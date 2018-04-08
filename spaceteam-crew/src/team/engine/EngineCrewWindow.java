@@ -3,40 +3,47 @@ package team.engine;
 import javax.swing.JFrame;
 
 import bpogoda.spaceteam.bean.ControlPanel;
+import game.GameController;
+import team.CrewWindow;
 
-public class EngineCrewWindow extends JFrame {
+public class EngineCrewWindow extends JFrame implements CrewWindow {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private GameController gameController;
+
 	public EngineCrewWindow() {
 		getContentPane().setLayout(null);
+
 		
-		ControlPanel controlPanel = new ControlPanel();
-		controlPanel.setSliderDeviceMax(11);
-		controlPanel.setSliderDeviceMin(5);
-		controlPanel.setToggleDeviceBtnLabel("Super boost");
-		controlPanel.setToggleDeviceName("Extra features");
-		controlPanel.setTextDeviceName("");
-		controlPanel.setSliderDeviceName("Engine cooling level");
+		//
+		
+		//
+		// controlPanel.addButtonToggledListener(ev -> {
+		// System.out.println("Toggle new state: " + ev.getNewState());
+		// });
+	}
+
+	@Override
+	public void setGameController(GameController gameController) {
+		this.gameController = gameController;
+	}
+
+	@Override
+	public void setControlPanel(ControlPanel controlPanel) {
 		controlPanel.setBounds(12, 13, 599, 405);
 		getContentPane().add(controlPanel);
-//		
-//		controlPanel.addButtonPressedListener(ev -> {
-//			System.out.println(ev.getButtonTitle());
-//		});
-//		
-		controlPanel.addSliderChangedListener(ev -> {
-			System.out.println("Slider new value: " + ev.getNewValue());
+		
+		
+		registerControlPanelEventHandlers(controlPanel);
+	}
+
+	private void registerControlPanelEventHandlers(ControlPanel controlPanel) {
+		
+		controlPanel.addCommandExecutedButtonPressedListener(ev -> {
+			gameController.onCommandExecutedButtonPressed();
 		});
 		
-		controlPanel.addCommandExecutedButtonPressedListener(ev -> {;
-			System.out.println("Command executed!");
-		});
-//		
-//		controlPanel.addButtonToggledListener(ev -> {
-//			System.out.println("Toggle new state: " + ev.getNewState());
-//		});
 	}
 }

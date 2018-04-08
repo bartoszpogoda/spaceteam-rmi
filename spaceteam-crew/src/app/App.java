@@ -4,29 +4,24 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import bpogoda.spaceteam.server.CrewType;
-import bpogoda.spaceteam.server.GameServer;
+import bpogoda.spaceteam.server.CrewGameServer;
 import bpogoda.spaceteam.server.GameServerManager;
+import game.GameController;
+import game.factory.GameControllerFactory;
 import team.engine.EngineCrewWindow;
 
 public class App {
 
 	private static final CrewType CREW_TYPE = CrewType.EngineCrew;
-	
+
 	public static void main(String[] args) {
 
-		try {
-			// Connect to GameServer
-			Registry registry = LocateRegistry.getRegistry(GameServerManager.REGISTRY_PORT);
-			GameServer stub = (GameServer) registry.lookup(GameServerManager.REGISTRY_STUB_NAME);
-			boolean response = stub.connectCrew(CREW_TYPE, null);
-			System.out.println("response: " + response);
-		} catch (Exception e) {
-			System.err.println("Client exception: " + e.toString());
-			e.printStackTrace();
-		}
+		// Todo select crew type
+		CrewType crewType = CrewType.EngineCrew;
 
-		EngineCrewWindow mw = new EngineCrewWindow();
-		mw.setVisible(true);
+		GameController gameController = GameControllerFactory.getInstance().create(crewType);
+
+		gameController.connectAndStart();
 	}
 
 }

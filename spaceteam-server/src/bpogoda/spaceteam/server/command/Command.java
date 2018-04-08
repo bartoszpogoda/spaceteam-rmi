@@ -1,9 +1,11 @@
 package bpogoda.spaceteam.server.command;
 
+import java.io.Serializable;
+
 import bpogoda.spaceteam.bean.ControlPanel;
 import bpogoda.spaceteam.server.CrewType;
 
-public abstract class Command {
+public abstract class Command implements Serializable {
 	
 	private CrewType targetCrew;
 	

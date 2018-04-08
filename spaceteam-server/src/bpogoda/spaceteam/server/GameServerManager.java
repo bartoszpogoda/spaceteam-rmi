@@ -29,7 +29,7 @@ public class GameServerManager {
 	public void startServer() throws RemoteException, AlreadyBoundException {
 
 		GameServerImpl server = new GameServerImpl();
-		GameServer stub = (GameServer) UnicastRemoteObject.exportObject(server, 0);
+		CrewGameServer stub = (CrewGameServer) UnicastRemoteObject.exportObject(server, 0);
 
 		// Bind the remote object's stub in the registry
 		registry.bind(REGISTRY_STUB_NAME, stub);

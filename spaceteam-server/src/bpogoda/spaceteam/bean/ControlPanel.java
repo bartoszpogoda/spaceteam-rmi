@@ -3,6 +3,7 @@ package bpogoda.spaceteam.bean;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +30,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-public class ControlPanel extends JPanel {
+public class ControlPanel extends JPanel implements Serializable {
 
 	/**
 	 * 
@@ -49,10 +50,12 @@ public class ControlPanel extends JPanel {
 	private String toggleDeviceBtnLabel;
 
 	private String textDeviceName;
-	
+
 	private String currentCommand;
-	
+
 	private CrewType crewType;
+
+	private String[] possibleTextCommands;
 
 	// Event listeners
 
@@ -325,5 +328,12 @@ public class ControlPanel extends JPanel {
 		this.crewType = crewType;
 	}
 
-	
+	public String[] getPossibleTextCommands() {
+		return possibleTextCommands;
+	}
+
+	public void setPossibleTextCommands(String[] possibleTextCommands) {
+		this.possibleTextCommands = possibleTextCommands;
+	}
+
 }

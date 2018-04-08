@@ -1,9 +1,11 @@
 package bpogoda.spaceteam.server.command;
 
+import java.io.Serializable;
+
 import bpogoda.spaceteam.bean.ControlPanel;
 import bpogoda.spaceteam.server.CrewType;
 
-public class ToggleCommand extends Command {
+public class ToggleCommand extends Command{
 
 	private boolean targetState;
 	
