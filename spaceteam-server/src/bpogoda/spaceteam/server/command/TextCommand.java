@@ -19,9 +19,7 @@ public class TextCommand extends Command {
 			return false;
 		}
 
-		// TODO properly executed check logic
-
-		return false;
+		return controlPanel.getTextDeviceValue().equals(targetText);
 	}
 
 }

@@ -18,13 +18,12 @@ public class ToggleCommand extends Command{
 
 	@Override
 	public boolean wasExecuted(CrewType crew, ControlPanel controlPanel) {
-		if(isTargetCrew(crew) == false) {
+		System.out.println("Elo");
+		if(!isTargetCrew(crew)) {
 			return false;
 		}
 		
-		// TODO properly executed check logic
-		
-		return false;
+		return controlPanel.getToggleDeviceValue() == targetState;
 	}
 
 }

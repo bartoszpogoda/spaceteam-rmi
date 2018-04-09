@@ -57,6 +57,8 @@ public class ControlPanel extends JPanel implements Serializable {
 
 	private String[] possibleTextCommands;
 
+	private Boolean sendCommandButtonEnabled = true;
+
 	// Event listeners
 
 	private List<TextChangedListener> textChangedListeners = new ArrayList<>();
@@ -227,6 +229,8 @@ public class ControlPanel extends JPanel implements Serializable {
 			setTitledBorder(panelTextDevice, textDeviceName);
 		}
 
+		btnActionDone.setEnabled(sendCommandButtonEnabled);
+
 		super.paint(g);
 	}
 
@@ -334,6 +338,24 @@ public class ControlPanel extends JPanel implements Serializable {
 
 	public void setPossibleTextCommands(String[] possibleTextCommands) {
 		this.possibleTextCommands = possibleTextCommands;
+	}
+
+	public void setSendCommandButtonEnabled(Boolean sendCommandButtonEnabled) {
+		this.sendCommandButtonEnabled = sendCommandButtonEnabled;
+		
+		this.btnActionDone.setEnabled(sendCommandButtonEnabled);
+	}
+
+	public int getSliderDeviceValue() {
+		return this.sliderSliderDevice.getValue();
+	}
+
+	public String getTextDeviceValue() {
+		return this.tfTextDevice.getText();
+	}
+
+	public boolean getToggleDeviceValue() {
+		return this.tglbtnToggleDevice.isSelected();
 	}
 
 }

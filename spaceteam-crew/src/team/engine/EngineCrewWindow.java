@@ -15,7 +15,7 @@ public class EngineCrewWindow extends JFrame implements CrewWindow {
 
 	public EngineCrewWindow() {
 		getContentPane().setLayout(null);
-
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		//
 		

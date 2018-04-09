@@ -100,6 +100,13 @@ public class CaptainController {
 				
 				System.out.println("Game state changed!");
 				
+				// TODO extract on game state changed to another method
+				
+				if(state == GameState.COMMAND_PHASE) {
+					captainWindow.setSendCommandBtnEnabled(true);
+				}
+				
+				
 				this.lastGameState = state;
 			}
 			

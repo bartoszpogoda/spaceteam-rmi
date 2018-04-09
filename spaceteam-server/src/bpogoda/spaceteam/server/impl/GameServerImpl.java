@@ -104,5 +104,24 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 		
 		return currentGameState;
 	}
+
+	@Override
+	public Command getCurrentCommand() throws RemoteException {
+		return currentCommand;
+	}
+
+	@Override
+	public GameState onExecutedCorrectly() throws RemoteException {
+		currentGameState = GameState.COMMAND_PHASE;
+		
+		return currentGameState;
+	}
+
+	@Override
+	public GameState onExecutedIncorrectly() throws RemoteException {
+		currentGameState = GameState.COMMAND_PHASE;
+		
+		return currentGameState;
+	}
 	
 }

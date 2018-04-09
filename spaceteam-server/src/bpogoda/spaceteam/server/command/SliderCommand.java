@@ -16,13 +16,11 @@ public class SliderCommand extends Command {
 
 	@Override
 	public boolean wasExecuted(CrewType crew, ControlPanel controlPanel) {
-		if(isTargetCrew(crew) == false) {
+		if(!isTargetCrew(crew)) {
 			return false;
 		}
 		
-		// TODO properly executed check logic
-		
-		return false;
+		return controlPanel.getSliderDeviceValue() == targetSliderValue;
 	}
 
 }

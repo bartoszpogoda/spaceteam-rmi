@@ -9,6 +9,5 @@ public interface CrewWindow {
 	
 	void setControlPanel(ControlPanel controlPanel);
 
-	void setVisible(boolean b);
-	
+	void setVisible(boolean b);	
 }

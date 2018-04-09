@@ -35,7 +35,8 @@ public class CaptainWindow extends JFrame {
 	private JButton btnSendCommand;
 
 	public CaptainWindow() {
-
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
 		listModel = new DefaultListModel<>();
 
 		listCommands = new JList(listModel);
