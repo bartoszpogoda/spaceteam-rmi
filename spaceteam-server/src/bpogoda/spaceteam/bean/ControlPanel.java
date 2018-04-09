@@ -54,6 +54,8 @@ public class ControlPanel extends JPanel implements Serializable {
 	private String currentCommand;
 
 	private CrewType crewType;
+	
+	private String roomName;
 
 	private String[] possibleTextCommands;
 
@@ -87,11 +89,8 @@ public class ControlPanel extends JPanel implements Serializable {
 	private JPanel panelTextDevice;
 
 	private JButton btnActionDone;
-	private JPanel panel_1;
-	private JLabel lblNewLabel;
-	private JLabel lblTeamScore;
 	private JLabel lblCommanderSays;
-	private JPanel panel_2;
+	private JPanel panelCommand;
 	private JLabel lblCurrentCommand;
 	private JLabel label;
 	private JPanel panel_3;
@@ -108,6 +107,10 @@ public class ControlPanel extends JPanel implements Serializable {
 
 		sliderSliderDevice = new JSlider();
 		panelSliderDevice.add(sliderSliderDevice);
+		
+		sliderSliderDevice.addChangeListener(change -> {
+			lblSliderDeviceValue.setText(Integer.toString(sliderSliderDevice.getValue()));
+		});
 
 		lblSliderDeviceValue = new JLabel("New label");
 		panelSliderDevice.add(lblSliderDeviceValue);
@@ -135,32 +138,19 @@ public class ControlPanel extends JPanel implements Serializable {
 		btnActionDone.setBounds(12, 362, 426, 25);
 		add(btnActionDone);
 
-		panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(449, 13, 139, 374);
-		add(panel_1);
-		panel_1.setLayout(new GridLayout(4, 2, 0, 0));
-
-		lblNewLabel = new JLabel("Team score:");
-		panel_1.add(lblNewLabel);
-
-		lblTeamScore = new JLabel("50");
-		lblNewLabel.setLabelFor(lblTeamScore);
-		panel_1.add(lblTeamScore);
-
-		panel_2 = new JPanel();
-		panel_2.setBackground(Color.ORANGE);
-		panel_2.setBounds(12, 13, 438, 39);
-		add(panel_2);
+		panelCommand = new JPanel();
+		panelCommand.setBackground(Color.ORANGE);
+		panelCommand.setBounds(12, 13, 438, 39);
+		add(panelCommand);
 
 		lblCommanderSays = new JLabel("Commander says: \"");
-		panel_2.add(lblCommanderSays);
+		panelCommand.add(lblCommanderSays);
 
 		lblCurrentCommand = new JLabel("Welcome, my team!");
-		panel_2.add(lblCurrentCommand);
+		panelCommand.add(lblCurrentCommand);
 
 		label = new JLabel("\"");
-		panel_2.add(label);
+		panelCommand.add(label);
 
 		panel_3 = new JPanel();
 		panel_3.setBounds(12, 60, 426, 39);
@@ -227,6 +217,10 @@ public class ControlPanel extends JPanel implements Serializable {
 
 		} else {
 			setTitledBorder(panelTextDevice, textDeviceName);
+		}
+		
+		if(roomName != null && !roomName.isEmpty()) {
+			lblTitle.setText(roomName);
 		}
 
 		btnActionDone.setEnabled(sendCommandButtonEnabled);
@@ -356,6 +350,18 @@ public class ControlPanel extends JPanel implements Serializable {
 
 	public boolean getToggleDeviceValue() {
 		return this.tglbtnToggleDevice.isSelected();
+	}
+
+	public void setLastCommandExecutedCorrectly(boolean b) {
+		panelCommand.setBackground(b ? Color.GREEN : Color.RED);
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
 
 }

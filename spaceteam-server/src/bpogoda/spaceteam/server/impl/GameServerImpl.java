@@ -17,11 +17,16 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 	private GameState currentGameState = GameState.INITIALIZING;
 
 	private List<Command> randomCommandPool = new ArrayList<>();
-	
+
 	private Command currentCommand;
-	
+
 	int connectedCrewPlayers = 0;
 	int connectedCaptainPlayers = 0;
+
+	int currentTeamScore = 0;
+
+	private static final int SCORE_BONUS_FOR_SUCCESS = 5;
+	private static final int SCORE_PENALTY_FOR_FAILURE = 5;
 
 	@Override
 	public boolean connectCrew(CrewType crewType, List<Command> randomCommands) throws RemoteException {
@@ -34,25 +39,25 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 		Collections.shuffle(randomCommandPool);
 
 		randomCommandPool.forEach(cmd -> System.out.println(cmd.getCommandMessage()));
-		
+
 		connectedCrewPlayers++;
 		startGameIfAllPlayersConnected();
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean connectCaptain() {
 		System.out.println("DBG: Captain connected");
-		
+
 		connectedCaptainPlayers++;
 		startGameIfAllPlayersConnected();
 
 		return true;
 	}
-	
+
 	private void startGameIfAllPlayersConnected() {
-		if(connectedCaptainPlayers == 1 && connectedCrewPlayers == 3) {
+		if (connectedCaptainPlayers == 1 && connectedCrewPlayers == 3) {
 			currentGameState = GameState.COMMAND_PHASE;
 		}
 	}
@@ -74,7 +79,7 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 		List<Command> commands = new ArrayList<>(randomCommandPool);
 
 		randomCommandPool.clear();
-		
+
 		return commands;
 	}
 
@@ -85,23 +90,23 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 
 	@Override
 	public GameState startGame() throws RemoteException {
-		
-		if(connectedCrewPlayers >= 1) {
+
+		if (connectedCrewPlayers >= 1) {
 			this.currentGameState = GameState.COMMAND_PHASE;
 		}
-		
+
 		return this.currentGameState;
 	}
 
 	@Override
 	public GameState sendCommand(Command command) {
-		
-		if(currentGameState == GameState.COMMAND_PHASE) {
+
+		if (currentGameState == GameState.COMMAND_PHASE) {
 			this.currentCommand = command;
-			
+
 			currentGameState = GameState.EXECUTION_PHASE;
 		}
-		
+
 		return currentGameState;
 	}
 
@@ -112,16 +117,27 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 
 	@Override
 	public GameState onExecutedCorrectly() throws RemoteException {
+
+		this.currentTeamScore += SCORE_BONUS_FOR_SUCCESS;
+
 		currentGameState = GameState.COMMAND_PHASE;
-		
+
 		return currentGameState;
 	}
 
 	@Override
 	public GameState onExecutedIncorrectly() throws RemoteException {
+
+		this.currentTeamScore -= SCORE_PENALTY_FOR_FAILURE;
+
 		currentGameState = GameState.COMMAND_PHASE;
-		
+
 		return currentGameState;
 	}
-	
+
+	@Override
+	public int getCurrentTeamScore() throws RemoteException {
+		return currentTeamScore;
+	}
+
 }

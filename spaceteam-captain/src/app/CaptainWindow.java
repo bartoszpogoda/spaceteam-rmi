@@ -34,7 +34,10 @@ public class CaptainWindow extends JFrame {
 
 	private JButton btnSendCommand;
 
+	private JLabel lblTeamScoreValue;
+
 	public CaptainWindow() {
+		setSize(500,500);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		listModel = new DefaultListModel<>();
@@ -84,6 +87,16 @@ public class CaptainWindow extends JFrame {
 
 		JButton btnNewButton = new JButton("New button");
 		panel_2.add(btnNewButton);
+		
+		JPanel panel_3 = new JPanel();
+		panel_2.add(panel_3);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
+		
+		JLabel lblTeamScore = new JLabel("Team score");
+		panel_3.add(lblTeamScore);
+		
+		lblTeamScoreValue = new JLabel("0");
+		panel_3.add(lblTeamScoreValue);
 
 		btnSendCommand.addActionListener(ev -> {
 			if (listCommands.getSelectedValue() != null) {
@@ -106,6 +119,10 @@ public class CaptainWindow extends JFrame {
 
 	public void setSendCommandBtnEnabled(boolean b) {
 		this.btnSendCommand.setEnabled(b);
+	}
+
+	public void setCurrentTeamScore(int currentTeamScore) {
+		this.lblTeamScoreValue.setText(Integer.toString(currentTeamScore));
 	}
 
 }

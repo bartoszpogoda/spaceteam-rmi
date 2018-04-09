@@ -2,7 +2,7 @@ package game.factory;
 
 import bpogoda.spaceteam.server.CrewType;
 import game.GameController;
-import team.engine.EngineCrewWindow;
+import team.engine.CrewWindowImpl;
 
 public class GameControllerFactory {
 
@@ -18,12 +18,7 @@ public class GameControllerFactory {
 		
 		ControlPanelFactory controlPanelFactory = ControlPanelFactory.getInstance();
 
-		GameController gameController = null;
-		
-		if (crewType == CrewType.EngineCrew) {
-			gameController = new GameController(crewType, new EngineCrewWindow());
-		}
-		
+		GameController gameController = new GameController(crewType, new CrewWindowImpl());
 		
 		gameController.setControlPanel(controlPanelFactory.create(crewType));
 

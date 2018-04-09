@@ -15,7 +15,7 @@ import bpogoda.spaceteam.server.command.Command;
 import bpogoda.spaceteam.server.command.factory.RandomCommandFactory;
 import bpogoda.spaceteam.server.impl.GameState;
 import team.CrewWindow;
-import team.engine.EngineCrewWindow;
+import team.engine.CrewWindowImpl;
 
 public class GameController {
 
@@ -52,14 +52,13 @@ public class GameController {
 
 		try {
 			if (executedCorrectly) {
-				System.out.println("GJ");
-				// TODO send info to server
-
+				controlPanel.setLastCommandExecutedCorrectly(true);
+				
 				updateGameState(gameServerStub.onExecutedCorrectly());
 
 			} else {
-				System.out.println("You retard!");
-				// TODO send info to server
+				controlPanel.setLastCommandExecutedCorrectly(false);
+				
 				updateGameState(gameServerStub.onExecutedIncorrectly());
 			}
 

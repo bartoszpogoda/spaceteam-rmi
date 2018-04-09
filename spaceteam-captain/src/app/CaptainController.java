@@ -5,6 +5,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
 
+import com.sun.java.swing.plaf.windows.resources.windows_zh_TW;
+
 import bpogoda.spaceteam.server.CaptainGameServer;
 import bpogoda.spaceteam.server.GameServerManager;
 import bpogoda.spaceteam.server.command.Command;
@@ -17,6 +19,8 @@ public class CaptainController {
 	private CaptainGameServer gameServerStub;
 	
 	private GameState lastGameState;
+
+	private int currentTeamScore;
 
 	public void setCaptainWindow(CaptainWindow captainWindow) {
 		this.captainWindow = captainWindow;
@@ -92,6 +96,9 @@ public class CaptainController {
 		
 		try {
 			GameState state = gameServerStub.getState();
+		
+			currentTeamScore = gameServerStub.getCurrentTeamScore();
+			captainWindow.setCurrentTeamScore(currentTeamScore);
 			
 			System.out.println("Game state is now: " + state);
 			

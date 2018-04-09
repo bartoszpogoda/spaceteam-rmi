@@ -19,6 +19,8 @@ public class ControlPanelFactory {
 		
 		if(crewType == CrewType.EngineCrew) {
 			customizeForEngineCrew(controlPanel);
+		} else if(crewType == CrewType.SteeringCrew) {
+			customizeForSteeringCrew(controlPanel);
 		}
 		
 		return controlPanel;
@@ -32,6 +34,16 @@ public class ControlPanelFactory {
 		controlPanel.setToggleDeviceName("Extra features");
 		controlPanel.setTextDeviceName("");
 		controlPanel.setSliderDeviceName("Engine cooling level");
+		controlPanel.setRoomName("Engine room");
 	}
+
+
+	private void customizeForSteeringCrew(ControlPanel controlPanel) {
+		controlPanel.setTextDeviceName("Direction");
+		controlPanel.setPossibleTextCommands(new String[] {"E", "W", "N", "S"});
+		controlPanel.setSliderDeviceName("");
+		controlPanel.setRoomName("Steering room");
+	}
+
 	
 }

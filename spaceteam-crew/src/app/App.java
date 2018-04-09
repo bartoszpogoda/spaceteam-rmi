@@ -10,12 +10,20 @@ public class App {
 
 	public static void main(String[] args) {
 
-		// Todo select crew type
-		CrewType crewType = CrewType.EngineCrew;
+		App app = new App();
+		
+		SelectCrewTypeFrame selectCrewTypeFrame = new SelectCrewTypeFrame();
+		selectCrewTypeFrame.setApp(app);
+		selectCrewTypeFrame.setVisible(true);
+
+	}
+
+	public void enterGame(CrewType crewType) {
 
 		GameController gameController = GameControllerFactory.getInstance().create(crewType);
 
 		gameController.connectAndStart();
+
 	}
 
 }
