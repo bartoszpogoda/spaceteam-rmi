@@ -7,10 +7,12 @@ import java.util.List;
 
 import bpogoda.spaceteam.bean.ControlPanel;
 import bpogoda.spaceteam.server.CrewType;
+import bpogoda.spaceteam.server.GameServerManager;
 import bpogoda.spaceteam.server.CaptainGameServer;
 import bpogoda.spaceteam.server.CrewGameServer;
 import bpogoda.spaceteam.server.command.Command;
 import bpogoda.spaceteam.server.command.factory.RandomCommandFactory;
+import bpogoda.spaceteam.view.ServerWindow;
 
 public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 
@@ -25,8 +27,14 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 
 	int currentTeamScore = 0;
 
-	private static final int SCORE_BONUS_FOR_SUCCESS = 5;
-	private static final int SCORE_PENALTY_FOR_FAILURE = 5;
+	private static final int SCORE_BONUS_FOR_SUCCESS = 1;
+	private static final int SCORE_PENALTY_FOR_FAILURE = 1;
+
+	private ServerWindow serverWindow;
+
+	public GameServerImpl(ServerWindow serverWindow) {
+		this.serverWindow = serverWindow;
+	}
 
 	@Override
 	public boolean connectCrew(CrewType crewType, List<Command> randomCommands) throws RemoteException {
@@ -41,7 +49,8 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 		randomCommandPool.forEach(cmd -> System.out.println(cmd.getCommandMessage()));
 
 		connectedCrewPlayers++;
-		startGameIfAllPlayersConnected();
+		
+		serverWindow.addCrewMemberToPlayerList(crewType);
 
 		return true;
 	}
@@ -50,8 +59,7 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 	public boolean connectCaptain() {
 		System.out.println("DBG: Captain connected");
 
-		connectedCaptainPlayers++;
-		startGameIfAllPlayersConnected();
+		serverWindow.addCaptainConnected();
 
 		return true;
 	}
@@ -138,6 +146,13 @@ public class GameServerImpl implements CrewGameServer, CaptainGameServer {
 	@Override
 	public int getCurrentTeamScore() throws RemoteException {
 		return currentTeamScore;
+	}
+
+	@Override
+	public GameState endGame() throws RemoteException {
+		currentGameState = GameState.ENDED;
+		
+		return currentGameState;
 	}
 
 }

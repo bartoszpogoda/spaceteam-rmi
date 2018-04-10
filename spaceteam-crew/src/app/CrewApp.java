@@ -4,13 +4,13 @@ import bpogoda.spaceteam.server.CrewType;
 import game.GameController;
 import game.factory.GameControllerFactory;
 
-public class App {
+public class CrewApp {
 
 	private static final CrewType CREW_TYPE = CrewType.EngineCrew;
 
 	public static void main(String[] args) {
 
-		App app = new App();
+		CrewApp app = new CrewApp();
 		
 		SelectCrewTypeFrame selectCrewTypeFrame = new SelectCrewTypeFrame();
 		selectCrewTypeFrame.setApp(app);

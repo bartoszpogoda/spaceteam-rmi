@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class CaptainWindow extends JFrame {
 
@@ -85,17 +87,26 @@ public class CaptainWindow extends JFrame {
 		});
 		panel_2.add(btnStartGame);
 
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("End game");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				captainController.endGame();
+			}
+		});
 		panel_2.add(btnNewButton);
 		
 		JPanel panel_3 = new JPanel();
 		panel_2.add(panel_3);
-		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
+		panel_3.setLayout(null);
 		
 		JLabel lblTeamScore = new JLabel("Team score");
+		lblTeamScore.setBounds(12, 65, 68, 16);
 		panel_3.add(lblTeamScore);
 		
 		lblTeamScoreValue = new JLabel("0");
+		lblTeamScoreValue.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTeamScoreValue.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		lblTeamScoreValue.setBounds(12, 94, 73, 94);
 		panel_3.add(lblTeamScoreValue);
 
 		btnSendCommand.addActionListener(ev -> {

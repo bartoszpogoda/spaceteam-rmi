@@ -18,5 +18,7 @@ public interface CrewGameServer extends Remote {
 	GameState onExecutedCorrectly() throws RemoteException;
 
 	GameState onExecutedIncorrectly() throws RemoteException;
+	
+	int getCurrentTeamScore() throws RemoteException;
     
 }

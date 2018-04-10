@@ -12,10 +12,10 @@ import bpogoda.spaceteam.server.CrewType;
 
 public class SelectCrewTypeFrame extends JFrame {
 	private JComboBox<CrewType> cbCrew;
-	private App app;
+	private CrewApp app;
 
 	public SelectCrewTypeFrame() {
-		setSize(600,200);
+		setSize(452,200);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -48,7 +48,7 @@ public class SelectCrewTypeFrame extends JFrame {
 		});
 	}
 	
-	public void setApp(App app) { 
+	public void setApp(CrewApp app) { 
 		this.app = app;
 	}
 }

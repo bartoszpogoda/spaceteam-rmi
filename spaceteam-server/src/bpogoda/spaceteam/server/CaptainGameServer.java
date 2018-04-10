@@ -12,6 +12,8 @@ public interface CaptainGameServer extends Remote {
 	
 	GameState startGame() throws RemoteException;
 	
+	GameState endGame() throws RemoteException;
+	
 	List<Command> getCommands(int number) throws RemoteException;
 	
 	List<Command> getAllCommands() throws RemoteException;

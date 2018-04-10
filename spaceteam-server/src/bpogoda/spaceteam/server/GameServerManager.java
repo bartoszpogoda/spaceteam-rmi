@@ -9,6 +9,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import bpogoda.spaceteam.server.impl.GameServerImpl;
+import bpogoda.spaceteam.view.ServerWindow;
 
 public class GameServerManager {
 	
@@ -17,8 +18,15 @@ public class GameServerManager {
 	public static final int REGISTRY_PORT = 1099;
 	
 	Registry registry;
+
+	private GameServerImpl server;
+
+	private ServerWindow serverWindow;
 	
-	public GameServerManager() {
+	public GameServerManager(ServerWindow serverWindow) {
+		
+		this.serverWindow = serverWindow;
+		
 		try {
 			registry = LocateRegistry.createRegistry(REGISTRY_PORT);
 		} catch (RemoteException e) {
@@ -28,7 +36,8 @@ public class GameServerManager {
 	
 	public void startServer() throws RemoteException, AlreadyBoundException {
 
-		GameServerImpl server = new GameServerImpl();
+		server = new GameServerImpl(serverWindow);
+		
 		CrewGameServer stub = (CrewGameServer) UnicastRemoteObject.exportObject(server, 0);
 
 		// Bind the remote object's stub in the registry

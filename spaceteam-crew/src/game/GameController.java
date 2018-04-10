@@ -5,6 +5,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import bpogoda.spaceteam.bean.ControlPanel;
@@ -140,7 +141,7 @@ public class GameController {
 					controlPanel.setSendCommandButtonEnabled(false);
 				} else if(gameState == GameState.COMMAND_PHASE) {
 					controlPanel.setSendCommandButtonEnabled(false);
-					controlPanel.setCurrentCommand("Fellas, wait for my command!");
+					controlPanel.setCurrentCommand("Wait for my command!");
 				} else	if (gameState == GameState.EXECUTION_PHASE) {
 				
 					// Enable send command button
@@ -150,6 +151,12 @@ public class GameController {
 					currentCommand = gameServerStub.getCurrentCommand();
 					controlPanel.setCurrentCommand(currentCommand.getCommandMessage());
 
+				} else if(gameState == GameState.ENDED) {
+					
+					int finalTeamScore = gameServerStub.getCurrentTeamScore();
+					
+					JOptionPane.showMessageDialog(null, "Game ended, your score was: " + finalTeamScore);
+					controlPanel.setSendCommandButtonEnabled(false);
 				}
 
 				System.out.println("Game state changed!");
